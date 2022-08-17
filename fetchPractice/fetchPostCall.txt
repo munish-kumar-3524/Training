@@ -1,0 +1,26 @@
+﻿fetch('http://localhost:8080/PracticeAjaxCall/textResult')
+.then(data => {
+return data.json();
+})
+.then(post => {
+console.log(post);
+});
+
+
+
+const formData3 = new FormData();
+formData3.append('text1', 'text1_value');
+formData3.append('text2', 'text2_value');
+formData3.append('text3', 'text3_value');
+formData3.append('text4', 'text4_value');
+
+fetch('http://localhost:8080/PracticeAjaxCall/textResult', {
+	method:'POST',
+	body:formData3
+})
+.then(data => {
+return data.json();
+})
+.then(post => {
+console.log(post);
+});
