@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<script type="text/javascript">
+	function createOrViewPs() {
+	    
+	    $.ajax({ 
+	        method: "GET",
+	        url: "http://localhost:8080/PracticeAjaxCall/DemoAction",
+	        traditional: true, 
+	        success:
+	            function(result){
+	                var jsonArr = inputStream;
+	            
+	                for (var i=0; i<jsonArr.length; i++)
+	                    for (var name in jsonArr[i]) {
+	                        alert("Item name: "+name);
+	                        alert("Source: "+jsonArr[i][name].milestoneName);
+	                }
+	            },
+	        error: 
+	            function(){
+	                alert("fail");
+	            }
+	    });         
+	} 
+	
+	</script>
+
+</body>
+</html>
