@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div class="Create">
+		<h2 style="text-align: center;">Create</h2>
+		Enter the Employee Name : <input type="text" name="employeeName" id="employeeName"><br>
+		Enter the Employee Age : <input type="number" name="employeeAge" id="employeeAge"><br>
+		Enter the Employee Designation : <input type="text" name="employeeDesignation" id="employeeDesignation"><br>
+		<input type="button" value="Add" onclick="add()"><br>
+		<p id="display1"></p>
+	</div><hr>
+
+	<div class="Read">
+		<h2 style="text-align: center;">Read</h2>
+		<input type="button" value="Show all employee details" onclick="read()"><br>
+		<table id="myTable">
+		  <tr>
+		  	<th>Id</th>
+		  	<th>Name</th>
+		  	<th>Age</th>
+		  	<th>Designation</th>
+		  </tr>
+		</table>
+	</div><hr>
+	
+	<div class="update">
+		<h2 style="text-align: center;">Update</h2>
+		Enter the Employee Id : <input type="number" name="employeeId2" id="employeeId2"><br>
+		Enter the Employee Name : <input type="text" name="employeeName2" id="employeeName2"><br>
+		Enter the Employee Age : <input type="number" name="employeeAge2" id="employeeAge2"><br>
+		Enter the Employee Designation : <input type="text" name="employeeDesignation2" id="employeeDesignation2"><br>
+		<input type="button" value="Update" onclick="update()"><br>
+		<p id="display2"></p>
+	</div><hr>
+	
+	<div class="delete">
+		<h2 style="text-align: center;">Delete</h2>
+		Enter the Employee Id : <input type="number" name="employeeId3" id="employeeId3"><br>
+		<input type="button" value="Delete" onclick="Delete()"><br>
+		<p id="display3"></p>
+	</div><hr>
+
+
+<script>
+	function add(){
+
+		let name = document.getElementById("employeeName").value;
+		let age = document.getElementById("employeeAge").value;
+		let designation = document.getElementById("employeeDesignation").value;
+		
+		const formData = new FormData();
+		formData.append('name', name);
+		formData.append('age', age);
+		formData.append('designation', designation);
+	
+		fetch('http://localhost:8080/EmployeeManagement/Create', {
+			method:'POST',
+			body:formData
+		})
+		.then(data => {
+		return data.json();
+		})
+		.then(post => {
+			console.log(post);
+			document.getElementById("display1").innerText = post.id + " is the employee id";
+			
+		});
+	}
+	
+	function read(){
+	
+		fetch('http://localhost:8080/EmployeeManagement/Read')
+		.then(data => {
+			return data.json();
+		})
+		.then(post => {
+			console.log(post);
+			var table = document.getElementById("myTable");
+			  for(let i=0; i<post.listOfId.length; i++){
+				  var row = table.insertRow(i);
+				  var Id = row.insertCell(0);
+				  var Name = row.insertCell(1);
+				  var Age = row.insertCell(2);
+				  var Designation = row.insertCell(3);
+				  Id.innerHTML = post.listOfId[i];
+				  Name.innerHTML = post.listOfName[i];
+				  Age.innerHTML = post.listOfAge[i];
+				  Designation.innerHTML = post.listOfDesignation[i];
+			  }
+			  
+		});
+	}
+	
+	function update(){
+
+		let id = document.getElementById("employeeId2").value;
+		let name = document.getElementById("employeeName2").value;
+		let age = document.getElementById("employeeAge2").value;
+		let designation = document.getElementById("employeeDesignation2").value;
+		
+		const formData = new FormData();
+		formData.append('id', id);
+		formData.append('name', name);
+		formData.append('age', age);
+		formData.append('designation', designation);
+	
+		fetch('http://localhost:8080/EmployeeManagement/Update', {
+			method:'POST',
+			body:formData
+		})
+		.then(data => {
+		return data.json();
+		})
+		.then(post => {
+			console.log(post);
+			if(post.isValid == "true"){
+				document.getElementById("display2").innerText = "Updated successfully";
+			}else{
+				document.getElementById("display2").innerText = "Invalid data";
+			}
+			
+		});
+	}
+	
+	function Delete(){
+
+		let id = document.getElementById("employeeId3").value;
+		
+		const formData = new FormData();
+		formData.append('id', id);
+	
+		fetch('http://localhost:8080/EmployeeManagement/Delete', {
+			method:'POST',
+			body:formData
+		})
+		.then(data => {
+		return data.json();
+		})
+		.then(post => {
+			console.log(post);
+			if(post.isValid == "true"){
+				document.getElementById("display3").innerText = "Deleted successfully";
+			}else{
+				document.getElementById("display3").innerText = "Invalid data";
+			}
+			
+		});
+	}
+</script>
+
+</body>
+</html>
